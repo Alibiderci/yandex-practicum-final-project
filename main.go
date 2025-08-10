@@ -4,17 +4,17 @@ import (
 	"log"
 
 	"yandex-practicum-final-project/pkg/server"
-	"yandex-practicum-final-project/pkg/database"
+	"yandex-practicum-final-project/pkg/db"
 )
 
 func main() {
 
-	err := database.Init()
+	err := db.Init()
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
-	defer database.Close()
+	defer db.Close()
 
 	err = server.Start()
 	if err != nil {

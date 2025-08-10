@@ -2,22 +2,17 @@ package server
 
 import (
 	"net/http"
-	"os"
+
+	"yandex-practicum-final-project/pkg/api"
 )
 
 func Start() error {
-	port := os.Getenv("TODO_PORT")
+	api.Init()
+
+	port := api.Port
 	if port == "" {
 		port = "7540"
 	}
 
-	webDir := os.Getenv("TODO_WEBDIR")
-	if webDir == "" {
-		webDir = "./web"
-	}
-
-	mux := http.NewServeMux()
-	mux.Handle("/", http.FileServer(http.Dir(webDir)))
-
-	return http.ListenAndServe(":" + port, mux)
+	return http.ListenAndServe(":" + port, nil)
 }
