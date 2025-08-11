@@ -12,6 +12,10 @@ func taskHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodPost:
 		AddTaskHandler(w, r)	
+	case http.MethodGet:
+		GetTaskHandler(w, r)
+	case http.MethodPut:
+		UpdateHandler(w, r)
 	default: 
 		http.Error(w, "Метод не поддерживается", http.StatusMethodNotAllowed)
 	}
