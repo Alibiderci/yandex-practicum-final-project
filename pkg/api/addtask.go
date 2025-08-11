@@ -35,7 +35,7 @@ func checkDate(task *db.Task) error {
 		if task.Repeat == "" {
 			task.Date = now.Format(layout) 
 		} else {
-			next, err := NextDate(now, task.Date, task.Repeat)
+			next, err := nextDate(now, task.Date, task.Repeat)
 			if err != nil {
 				return err
 			}
@@ -43,7 +43,7 @@ func checkDate(task *db.Task) error {
 		}
 	} else {
 		if task.Repeat != "" {
-			_, err := NextDate(now, task.Date, task.Repeat)
+			_, err := nextDate(now, task.Date, task.Repeat)
 			if err != nil {
 				return err 
 
@@ -55,7 +55,7 @@ func checkDate(task *db.Task) error {
 }
 
 
-func AddTaskHandler(w http.ResponseWriter, r *http.Request) {
+func addTaskHandler(w http.ResponseWriter, r *http.Request) {
 	var task db.Task
 
 	if err := json.NewDecoder(r.Body).Decode(&task); err != nil {	

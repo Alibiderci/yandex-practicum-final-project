@@ -18,7 +18,7 @@ func afterNow(date, now time.Time) bool {
 	return dateOnly.After(nowOnly)
 }
 
-func NextDate(now time.Time, dstart string, repeat string) (string, error) {
+func nextDate(now time.Time, dstart string, repeat string) (string, error) {
 	if repeat == "" {
 		return "", errors.New("параметр repeat не должен быть пустым")
 	}
@@ -172,7 +172,7 @@ func NextDate(now time.Time, dstart string, repeat string) (string, error) {
 
 
 
-func NextDateHandler(w http.ResponseWriter, r *http.Request) {
+func nextDateHandler(w http.ResponseWriter, r *http.Request) {
 	var now time.Time
 	var err error
 
@@ -190,7 +190,7 @@ func NextDateHandler(w http.ResponseWriter, r *http.Request) {
 	date := r.FormValue("date")
 	repeat := r.FormValue("repeat")
 
-	nextDate, err := NextDate(now, date, repeat)
+	nextDate, err := nextDate(now, date, repeat)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return

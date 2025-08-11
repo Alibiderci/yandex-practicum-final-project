@@ -9,7 +9,7 @@ type TaskResponse struct {
 	Tasks []*db.Task `json:"tasks"`
 }
 
-func TasksHandler(w http.ResponseWriter, r *http.Request) {
+func tasksHandler(w http.ResponseWriter, r *http.Request) {
 	searchQuery := r.URL.Query().Get("search")
 
 	tasks, err := db.Tasks(50, searchQuery)

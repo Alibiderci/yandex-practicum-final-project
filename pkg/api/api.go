@@ -11,11 +11,13 @@ var webDir string = os.Getenv("TODO_WEBDIR")
 func taskHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodPost:
-		AddTaskHandler(w, r)	
+		addTaskHandler(w, r)	
 	case http.MethodGet:
-		GetTaskHandler(w, r)
+		getTaskHandler(w, r)
 	case http.MethodPut:
-		UpdateHandler(w, r)
+		updateHandler(w, r)
+	case http.MethodDelete:
+		deleteHandler(w, r)
 	default: 
 		http.Error(w, "Метод не поддерживается", http.StatusMethodNotAllowed)
 	}
@@ -28,8 +30,9 @@ func Init() {
 	}
 
 	http.Handle("/", http.FileServer(http.Dir(webDir)))
-	http.HandleFunc("/api/nextdate", NextDateHandler)
+	http.HandleFunc("/api/nextdate", nextDateHandler)
 	http.HandleFunc("/api/task", taskHandler)
-	http.HandleFunc("/api/tasks", TasksHandler)
+	http.HandleFunc("/api/tasks", tasksHandler)
+	http.HandleFunc("/api/task/done", doneHandler)
 }
 

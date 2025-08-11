@@ -6,7 +6,7 @@ import (
 	"yandex-practicum-final-project/pkg/db"
 )
 
-func UpdateHandler(w http.ResponseWriter, r *http.Request) {
+func updateHandler(w http.ResponseWriter, r *http.Request) {
 	task := db.Task{}
 
 	err := json.NewDecoder(r.Body).Decode(&task)
