@@ -8,6 +8,9 @@ import (
 	"yandex-practicum-final-project/pkg/db"
 )
 
+// writeJson — это вспомогательная функция для отправки JSON-ответов.
+// Она устанавливает правильный заголовок Content-Type, статус-код
+// и кодирует переданные данные в JSON.
 func writeJson(w http.ResponseWriter, statusCode int, data any) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(statusCode)
@@ -18,6 +21,8 @@ func writeJson(w http.ResponseWriter, statusCode int, data any) {
 
 }
 
+// checkDate проверяет и корректирует дату задачи в соответствии с бизнес-правилами.
+// Функция гарантирует, что у задачи всегда будет актуальная дата.
 func checkDate(task *db.Task) error {
 	now := time.Now()
 
@@ -31,6 +36,7 @@ func checkDate(task *db.Task) error {
 	}
 
 
+	// Проверяем, что дата задачи находится строго в прошлом (т.е. вчера или ранее).
 	if !afterNow(t, now) && t.Format(layout) != now.Format(layout) {
 		if task.Repeat == "" {
 			task.Date = now.Format(layout) 
@@ -42,6 +48,7 @@ func checkDate(task *db.Task) error {
 			task.Date = next
 		}
 	} else {
+		// Дата сегодня или в будущем. Дату не меняем, но правило повтора нужно проверить.
 		if task.Repeat != "" {
 			_, err := nextDate(now, task.Date, task.Repeat)
 			if err != nil {
@@ -55,6 +62,9 @@ func checkDate(task *db.Task) error {
 }
 
 
+// AddTaskHandler обрабатывает POST-запросы к эндпоинту /api/task.
+// Он декодирует JSON из тела запроса, валидирует данные с помощью checkDate
+// и сохраняет новую задачу в базу данных.
 func addTaskHandler(w http.ResponseWriter, r *http.Request) {
 	var task db.Task
 
