@@ -5,6 +5,9 @@ import (
 	"yandex-practicum-final-project/pkg/db"
 )
 
+// limit представляет максимальное количество вовзращаемых рядов из БД
+const limit int = 50
+
 // tasksResponse — это структура-обертка для JSON-ответа со списком задач.
 // Использование такой структуры делает JSON более читаемым и расширяемым в будущем.
 type TaskResponse struct {
@@ -23,7 +26,7 @@ func tasksHandler(w http.ResponseWriter, r *http.Request) {
 	// Вызов бизнес-логики (получение задачи из БД) 
 	// Вызываем функцию из пакета db, передавая ей лимит и строку поиска.
 	// Слой БД сам разберется, как выполнить запрос (поиск по дате, по слову или все задачи).
-	tasks, err := db.Tasks(50, searchQuery)
+	tasks, err := db.Tasks(limit, searchQuery)
 	if err != nil {
 		writeJson(w, http.StatusInternalServerError, map[string]string{"error": err.Error()})
 		return

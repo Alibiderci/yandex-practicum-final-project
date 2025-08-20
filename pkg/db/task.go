@@ -7,6 +7,9 @@ import (
 	"strconv"
 )
 
+// layout - формат превращения даты в строку
+const layout = "20060102"
+
 // Task представляет собой одну задачу в планировщике.
 // Структура соответствует полям таблицы 'scheduler' в базе данных.
 type Task struct {
@@ -46,7 +49,7 @@ func Tasks(limit int, search string) ([]*Task, error) {
 
 	if err == nil {
 		// Поиск по дате.
-		date := t.Format("20060102")
+		date := t.Format(layout)
 
 		query := `SELECT * FROM scheduler WHERE date = ? ORDER BY date LIMIT ?`
 		rows, err = DB.Query(query, date, limit)

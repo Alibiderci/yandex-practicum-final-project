@@ -12,13 +12,17 @@ import (
 // Она устанавливает правильный заголовок Content-Type, статус-код
 // и кодирует переданные данные в JSON.
 func writeJson(w http.ResponseWriter, statusCode int, data any) {
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.WriteHeader(statusCode)
 
-	if err := json.NewEncoder(w).Encode(data); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	response, err := json.Marshal(data)	
+
+	if err != nil {
+		http.Error(w, "Ошибка сервера при формировании ответа", http.StatusInternalServerError)
+		return
 	}
 
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(statusCode)
+	w.Write(response)
 }
 
 // checkDate проверяет и корректирует дату задачи в соответствии с бизнес-правилами.

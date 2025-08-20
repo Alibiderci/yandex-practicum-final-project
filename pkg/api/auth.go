@@ -11,6 +11,9 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
+// envPass - пароль из переменной окружения, который будет использоваться в качестве jwt секрета
+var envPass = os.Getenv("TODO_PASSWORD")
+
 // claims - это кастомная структура полезных данных (payload) для нашего JWT
 // Она встраивает стандартные RegisteredClaims (для полей вроде "exp" - срок годности и т.д.)
 // и добавляет наше собственное поле PasswordHash для сверки с текущим паролем
@@ -55,8 +58,6 @@ func generateJWT(envPass string) (string, error) {
 // перед тем, как передать управление основному обработчику
 func auth(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		envPass := os.Getenv("TODO_PASSWORD")
-
 		// если пароль не установлен, аутентификая не требуется
 		if envPass == "" {
 			next(w, r)
@@ -131,7 +132,6 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	envPass := os.Getenv("TODO_PASSWORD")
 	// Защитная проверка
 	if envPass == "" {
 		writeJson(w, http.StatusInternalServerError, map[string]string{"error": "аутентификая не настроена на сервере"})

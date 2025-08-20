@@ -46,6 +46,7 @@ func updateHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		if strings.Contains(err.Error(), "не найдена") {
 			writeJson(w, http.StatusNotFound, map[string]string{"error": err.Error()})
+			return
 		} else {
 			writeJson(w, http.StatusInternalServerError, map[string]string{"error": err.Error()})
 			return

@@ -227,6 +227,11 @@ func nextDate(now time.Time, dstart string, repeat string) (string, error) {
 // из URL-запроса (query parameters), вызывает NextDate для вычисления
 // и возвращает результат в виде простого текста.
 func nextDateHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		writeJson(w, http.StatusMethodNotAllowed, map[string]string{"error": "неподдерживаемый метод"})
+		return
+	}
+
 	var now time.Time
 	var err error
 
